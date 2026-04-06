@@ -13,20 +13,22 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-6">
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
             <a href="/admin" className="text-xl font-bold text-black">Milo & Milo Motors</a>
-            <a href="/admin" className="text-black hover:text-gray-700">Dashboard</a>
-            <a href="/admin/cars/new" className="text-black hover:text-gray-700">Add Car</a>
-            <a href="/" className="text-black hover:text-gray-700" target="_blank">View Site</a>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-black hidden sm:inline">{user.email}</span>
+              <form action={signOut}>
+                <button type="submit" className="text-sm text-red-600 hover:text-red-800">
+                  Logout
+                </button>
+              </form>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-black">{user.email}</span>
-            <form action={signOut}>
-              <button type="submit" className="text-sm text-red-600 hover:text-red-800">
-                Logout
-              </button>
-            </form>
+          <div className="flex items-center gap-4 mt-2">
+            <a href="/admin" className="text-sm text-black hover:text-gray-700">Dashboard</a>
+            <a href="/admin/cars/new" className="text-sm text-black hover:text-gray-700">Add Car</a>
+            <a href="/" className="text-sm text-black hover:text-gray-700" target="_blank">View Site</a>
           </div>
         </div>
       </nav>

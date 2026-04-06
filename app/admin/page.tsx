@@ -45,7 +45,7 @@ export default async function AdminDashboardPage() {
       {(!cars || cars.length === 0) ? (
         <p className="text-black">No cars listed yet. Add your first car!</p>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden text-black">
+        <div className="bg-white rounded-lg shadow overflow-x-auto text-black">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
