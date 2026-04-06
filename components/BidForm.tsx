@@ -1,41 +1,28 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/browser'
 
 interface BidFormProps {
   carId: string
   minimumBid: number
+  verifiedEmail: string | null
 }
 
 type Step = 'email' | 'code' | 'bid'
 
-export default function BidForm({ carId, minimumBid }: BidFormProps) {
+export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormProps) {
   const router = useRouter()
   const supabase = createClient()
-  const [step, setStep] = useState<Step>('email')
-  const [email, setEmail] = useState('')
+  const [step, setStep] = useState<Step>(verifiedEmail ? 'bid' : 'email')
+  const [email, setEmail] = useState(verifiedEmail || '')
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [amount, setAmount] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [checkingSession, setCheckingSession] = useState(true)
-
-  // Check for existing session on mount
-  useEffect(() => {
-    async function checkSession() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user?.email) {
-        setEmail(user.email)
-        setStep('bid')
-      }
-      setCheckingSession(false)
-    }
-    checkSession()
-  }, [])
 
   async function handleSendCode(e: React.FormEvent) {
     e.preventDefault()
@@ -107,10 +94,6 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
 
     setSuccess(true)
     router.refresh()
-  }
-
-  if (checkingSession) {
-    return <p className="text-sm text-black">Loading...</p>
   }
 
   if (success) {

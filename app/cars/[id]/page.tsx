@@ -31,6 +31,13 @@ export default async function CarDetailPage({ params }: PageProps) {
   const highestBid = bids && bids.length > 0 ? bids[0].amount : null
   const auctionEnded = new Date(car.auction_end_time) < new Date()
 
+  // Check if current user is a verified bidder (not an admin)
+  const { data: { user } } = await supabase.auth.getUser()
+  const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase())
+  const verifiedBidderEmail = user?.email && !adminEmails.includes(user.email.toLowerCase())
+    ? user.email
+    : null
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
@@ -122,6 +129,7 @@ export default async function CarDetailPage({ params }: PageProps) {
                 <BidForm
                   carId={car.id}
                   minimumBid={highestBid ? highestBid + 1 : car.starting_price}
+                  verifiedEmail={verifiedBidderEmail}
                 />
               )}
             </div>
