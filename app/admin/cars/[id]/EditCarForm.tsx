@@ -108,26 +108,26 @@ export default function EditCarForm() {
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-black mb-1">Title *</label>
           <input id="title" name="title" type="text" required defaultValue={car.title}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label htmlFor="year" className="block text-sm font-medium text-black mb-1">Year</label>
             <input id="year" name="year" type="number" defaultValue={car.year ?? ''}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
             <label htmlFor="mileage" className="block text-sm font-medium text-black mb-1">Mileage</label>
             <input id="mileage" name="mileage" type="number" defaultValue={car.mileage ?? ''}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
         </div>
 
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-black mb-1">Description</label>
           <textarea id="description" name="description" rows={4} defaultValue={car.description ?? ''}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -135,13 +135,13 @@ export default function EditCarForm() {
             <label htmlFor="starting_price" className="block text-sm font-medium text-black mb-1">Starting Price ($) *</label>
             <input id="starting_price" name="starting_price" type="number" step="0.01" min="0" required
               defaultValue={car.starting_price}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
             <label htmlFor="auction_end_time" className="block text-sm font-medium text-black mb-1">Auction End Date/Time *</label>
             <input id="auction_end_time" name="auction_end_time" type="datetime-local" required
               defaultValue={endTimeLocal}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
         </div>
 
