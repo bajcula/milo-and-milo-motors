@@ -154,15 +154,15 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
       {step === 'code' && (
         <form onSubmit={handleVerifyCode} className="space-y-3">
           <p className="text-sm text-black mb-3">
-            We sent a 6-digit code to <strong>{email}</strong>
+            We sent a 8-digit code to <strong>{email}</strong>
           </p>
           <div>
             <input
               type="text"
-              placeholder="Enter 6-digit code"
+              placeholder="Enter 8-digit code"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              maxLength={6}
+              maxLength={8}
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-center text-2xl tracking-widest text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -170,7 +170,7 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
-            disabled={loading || code.length !== 6}
+            disabled={loading || code.length !== 8}
             className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
           >
             {loading ? 'Verifying...' : 'Verify Code'}
