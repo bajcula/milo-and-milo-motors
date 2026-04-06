@@ -46,7 +46,7 @@ export default async function HomePage() {
 
         {activeCars.length > 0 && (
           <>
-            <h2 className="text-xl font-bold mb-4">Active Auctions</h2>
+            <h2 className="text-xl font-bold mb-4 text-black">Active Auctions</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {activeCars.map((car) => (
                 <CarCard key={car.id} car={car} highestBid={highestBidMap[car.id] ?? null} />
