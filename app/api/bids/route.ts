@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { car_id, bidder_name, bidder_email, amount } = body
+  const { car_id, bidder_name, amount } = body
 
   // Validate required fields
-  if (!car_id || !bidder_name || !bidder_email || !amount) {
+  if (!car_id || !bidder_name || !amount) {
     return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
   }
 
@@ -14,25 +15,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Bid amount must be a positive number' }, { status: 400 })
   }
 
-  const supabase = createServiceClient()
+  // 1. Verify the user has an authenticated session (email verified via OTP)
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  // 1. Verify the email was recently verified (has a used code in the last 2 hours)
-  const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
-  const { data: verification } = await supabase
-    .from('verification_codes')
-    .select('id')
-    .eq('email', bidder_email.toLowerCase())
-    .eq('used', true)
-    .gt('created_at', twoHoursAgo)
-    .limit(1)
-    .single()
-
-  if (!verification) {
+  if (!user || !user.email) {
     return NextResponse.json({ error: 'Email not verified. Please verify your email first.' }, { status: 403 })
   }
 
-  // 2. Check the car exists and auction hasn't ended
-  const { data: car } = await supabase
+  const bidder_email = user.email
+
+  // 2. Use service client for data operations (bypasses RLS)
+  const serviceClient = createServiceClient()
+
+  // 3. Check the car exists and auction hasn't ended
+  const { data: car } = await serviceClient
     .from('cars')
     .select('id, starting_price, auction_end_time')
     .eq('id', car_id)
@@ -46,8 +43,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'This auction has ended' }, { status: 400 })
   }
 
-  // 3. Check bid is higher than current highest bid (or starting price)
-  const { data: highestBid } = await supabase
+  // 4. Check bid is higher than current highest bid (or starting price)
+  const { data: highestBid } = await serviceClient
     .from('bids')
     .select('amount')
     .eq('car_id', car_id)
@@ -64,8 +61,8 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // 4. Insert the bid
-  const { error: bidError } = await supabase
+  // 5. Insert the bid
+  const { error: bidError } = await serviceClient
     .from('bids')
     .insert({
       car_id,

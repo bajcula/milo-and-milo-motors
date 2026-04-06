@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import CountdownTimer from '@/components/CountdownTimer'
 import BidForm from '@/components/BidForm'
+import ImageGallery from '@/components/ImageGallery'
 
 export const revalidate = 30
 
@@ -44,25 +45,7 @@ export default async function CarDetailPage({ params }: PageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Photos & Description */}
           <div className="lg:col-span-2">
-            {car.image_urls.length > 0 ? (
-              <div className="space-y-2">
-                <div className="aspect-[16/9] bg-gray-200 rounded-lg overflow-hidden">
-                  <img src={car.image_urls[0]} alt={car.title} className="w-full h-full object-cover" />
-                </div>
-                {car.image_urls.length > 1 && (
-                  <div className="flex gap-2 overflow-x-auto">
-                    {car.image_urls.map((url: string, i: number) => (
-                      <img key={i} src={url} alt={`${car.title} photo ${i + 1}`}
-                        className="w-24 h-24 object-cover rounded flex-shrink-0" />
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="aspect-[16/9] bg-gray-200 rounded-lg flex items-center justify-center text-black">
-                No Photos
-              </div>
-            )}
+            <ImageGallery imageUrls={car.image_urls} title={car.title} />
 
             <h1 className="text-3xl font-bold mt-6 text-black">{car.title}</h1>
             <p className="text-black mt-1">

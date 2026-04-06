@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/browser'
 
 interface BidFormProps {
   carId: string
@@ -12,6 +13,7 @@ type Step = 'email' | 'code' | 'bid'
 
 export default function BidForm({ carId, minimumBid }: BidFormProps) {
   const router = useRouter()
+  const supabase = createClient()
   const [step, setStep] = useState<Step>('email')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -20,23 +22,32 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  // Check for existing session on mount
+  useEffect(() => {
+    async function checkSession() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user?.email) {
+        setEmail(user.email)
+        setStep('bid')
+      }
+      setCheckingSession(false)
+    }
+    checkSession()
+  }, [])
 
   async function handleSendCode(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const res = await fetch('/api/verify/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    })
+    const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
-    const data = await res.json()
     setLoading(false)
 
-    if (!res.ok) {
-      setError(data.error)
+    if (otpError) {
+      setError(otpError.message)
       return
     }
 
@@ -48,17 +59,16 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
     setLoading(true)
     setError('')
 
-    const res = await fetch('/api/verify/confirm', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code }),
+    const { error: verifyError } = await supabase.auth.verifyOtp({
+      email,
+      token: code,
+      type: 'email',
     })
 
-    const data = await res.json()
     setLoading(false)
 
-    if (!res.ok) {
-      setError(data.error)
+    if (verifyError) {
+      setError(verifyError.message)
       return
     }
 
@@ -83,7 +93,6 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
       body: JSON.stringify({
         car_id: carId,
         bidder_name: name,
-        bidder_email: email,
         amount: bidAmount,
       }),
     })
@@ -100,13 +109,17 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
     router.refresh()
   }
 
+  if (checkingSession) {
+    return <p className="text-sm text-black">Loading...</p>
+  }
+
   if (success) {
     return (
       <div className="text-center py-4 bg-green-50 rounded-md">
         <p className="font-medium text-green-700">Bid placed successfully!</p>
         <p className="text-sm text-green-600 mt-1">${parseFloat(amount).toLocaleString()}</p>
         <button
-          onClick={() => { setSuccess(false); setStep('bid'); setAmount('') }}
+          onClick={() => { setSuccess(false); setAmount('') }}
           className="mt-3 text-sm text-blue-600 hover:text-blue-800"
         >
           Place another bid
@@ -130,7 +143,7 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
@@ -140,7 +153,7 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
@@ -168,7 +181,7 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
               onChange={(e) => setCode(e.target.value)}
               maxLength={6}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-center text-2xl tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-center text-2xl tracking-widest text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
@@ -195,6 +208,18 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
           <p className="text-sm text-green-600 mb-3">
             Verified as <strong>{email}</strong>
           </p>
+          {!name && (
+            <div>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-black mb-1">
               Your Bid (minimum ${minimumBid.toLocaleString()})
@@ -209,14 +234,14 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
                 onChange={(e) => setAmount(e.target.value)}
                 required
                 placeholder={minimumBid.toString()}
-                className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
-            disabled={loading || !amount}
+            disabled={loading || !amount || !name}
             className="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 font-medium"
           >
             {loading ? 'Placing bid...' : 'Place Bid'}
