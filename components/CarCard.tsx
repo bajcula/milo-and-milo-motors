@@ -27,25 +27,25 @@ export default function CarCard({ car, highestBid }: CarCardProps) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
+          <div className="w-full h-full flex items-center justify-center text-black">
             No Photo
           </div>
         )}
       </div>
       <div className="p-4">
         <h3 className="font-bold text-lg">{car.title}</h3>
-        <p className="text-sm text-gray-500">
-          {car.year ?? ''} {car.mileage ? `\u00B7 ${car.mileage.toLocaleString()} mi` : ''}
+        <p className="text-sm text-black">
+          {car.year ?? ''} {car.mileage ? `· ${car.mileage.toLocaleString()} mi` : ''}
         </p>
         <div className="mt-3 flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-black">
               {highestBid ? 'Current Bid' : 'Starting At'}
             </p>
             <p className="text-xl font-bold text-green-700">${currentPrice.toLocaleString()}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-500">Time Left</p>
+            <p className="text-sm text-black">Time Left</p>
             <CountdownTimer endTime={car.auction_end_time} />
           </div>
         </div>

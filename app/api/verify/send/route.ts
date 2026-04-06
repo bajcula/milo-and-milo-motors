@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
   const { error: emailError } = await resend.emails.send({
     from: process.env.EMAIL_FROM || 'Milo & Milo Motors <onboarding@resend.dev>',
     to: [email],
-    subject: 'Your Verification Code \u2014 Milo & Milo Motors',
+    subject: 'Your Verification Code — Milo & Milo Motors',
     html: `
       <div style="font-family: sans-serif; max-width: 400px; margin: 0 auto; padding: 20px;">
         <h2>Milo & Milo Motors</h2>

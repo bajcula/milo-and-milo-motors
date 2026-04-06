@@ -33,7 +33,7 @@ export default async function AdminDashboardPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-black">Dashboard</h1>
         <Link
           href="/admin/cars/new"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -43,18 +43,18 @@ export default async function AdminDashboardPage() {
       </div>
 
       {(!cars || cars.length === 0) ? (
-        <p className="text-gray-500">No cars listed yet. Add your first car!</p>
+        <p className="text-black">No cars listed yet. Add your first car!</p>
       ) : (
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Car</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Starting Price</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Highest Bid</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Bids</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-black">Car</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-black">Starting Price</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-black">Highest Bid</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-black">Bids</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-black">Status</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-black">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -65,13 +65,13 @@ export default async function AdminDashboardPage() {
                   <tr key={car.id}>
                     <td className="px-4 py-3">
                       <div className="font-medium">{car.title}</div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-black">
                         {car.year} {car.mileage ? `· ${car.mileage.toLocaleString()} mi` : ''}
                       </div>
                     </td>
                     <td className="px-4 py-3">${car.starting_price.toLocaleString()}</td>
                     <td className="px-4 py-3">
-                      {info ? `$${info.highest.toLocaleString()}` : '\u2014'}
+                      {info ? `$${info.highest.toLocaleString()}` : '—'}
                     </td>
                     <td className="px-4 py-3">{info?.count || 0}</td>
                     <td className="px-4 py-3">

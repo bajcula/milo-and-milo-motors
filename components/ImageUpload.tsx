@@ -50,7 +50,7 @@ export default function ImageUpload({ existingUrls, onUrlsChange }: ImageUploadP
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">Photos</label>
+      <label className="block text-sm font-medium text-black mb-1">Photos</label>
 
       {existingUrls.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">
@@ -75,9 +75,9 @@ export default function ImageUpload({ existingUrls, onUrlsChange }: ImageUploadP
         multiple
         onChange={handleUpload}
         disabled={uploading}
-        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        className="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
       />
-      {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
+      {uploading && <p className="text-sm text-black mt-1">Uploading...</p>}
     </div>
   )
 }

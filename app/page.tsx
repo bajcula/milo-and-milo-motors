@@ -32,14 +32,14 @@ export default async function HomePage() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
         <div className="max-w-6xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold">Milo & Milo Motors</h1>
-          <p className="text-gray-500 mt-1">Quality used cars \u2014 bid now!</p>
+          <h1 className="text-3xl font-bold text-black">Milo & Milo Motors</h1>
+          <p className="text-black mt-1">Quality used cars — bid now!</p>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         {activeCars.length === 0 && endedCars.length === 0 && (
-          <p className="text-gray-500 text-center py-12">
+          <p className="text-black text-center py-12">
             No cars listed yet. Check back soon!
           </p>
         )}
@@ -57,7 +57,7 @@ export default async function HomePage() {
 
         {endedCars.length > 0 && (
           <>
-            <h2 className="text-xl font-bold mb-4 text-gray-400">Ended Auctions</h2>
+            <h2 className="text-xl font-bold mb-4 text-black">Ended Auctions</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60">
               {endedCars.map((car) => (
                 <CarCard key={car.id} car={car} highestBid={highestBidMap[car.id] ?? null} />
@@ -68,7 +68,7 @@ export default async function HomePage() {
       </main>
 
       <footer className="border-t bg-white mt-12">
-        <div className="max-w-6xl mx-auto px-4 py-6 text-center text-sm text-gray-400">
+        <div className="max-w-6xl mx-auto px-4 py-6 text-center text-sm text-black">
           Milo & Milo Motors
         </div>
       </footer>

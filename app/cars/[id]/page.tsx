@@ -59,32 +59,32 @@ export default async function CarDetailPage({ params }: PageProps) {
                 )}
               </div>
             ) : (
-              <div className="aspect-[16/9] bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
+              <div className="aspect-[16/9] bg-gray-200 rounded-lg flex items-center justify-center text-black">
                 No Photos
               </div>
             )}
 
             <h1 className="text-3xl font-bold mt-6">{car.title}</h1>
-            <p className="text-gray-500 mt-1">
-              {car.year ?? ''} {car.mileage ? `\u00B7 ${car.mileage.toLocaleString()} miles` : ''}
+            <p className="text-black mt-1">
+              {car.year ?? ''} {car.mileage ? `· ${car.mileage.toLocaleString()} miles` : ''}
             </p>
 
             {car.description && (
-              <div className="mt-4 text-gray-700 whitespace-pre-wrap">{car.description}</div>
+              <div className="mt-4 text-black whitespace-pre-wrap">{car.description}</div>
             )}
 
             <div className="mt-8">
               <h2 className="text-xl font-bold mb-4">Bid History ({bids?.length || 0})</h2>
               {(!bids || bids.length === 0) ? (
-                <p className="text-gray-500">No bids yet. Be the first!</p>
+                <p className="text-black">No bids yet. Be the first!</p>
               ) : (
                 <div className="bg-white rounded-lg shadow overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Bidder</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Amount</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Time</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-black">Bidder</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-black">Amount</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-black">Time</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -95,7 +95,7 @@ export default async function CarDetailPage({ params }: PageProps) {
                             ${bid.amount.toLocaleString()}
                             {i === 0 && <span className="ml-2 text-xs text-green-600 font-medium">HIGHEST</span>}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-500">
+                          <td className="px-4 py-3 text-sm text-black">
                             {new Date(bid.created_at).toLocaleString()}
                           </td>
                         </tr>
@@ -111,7 +111,7 @@ export default async function CarDetailPage({ params }: PageProps) {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow p-6 sticky top-8">
               <div className="mb-4">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-black">
                   {highestBid ? 'Current High Bid' : 'Starting Price'}
                 </p>
                 <p className="text-3xl font-bold text-green-700">
@@ -120,7 +120,7 @@ export default async function CarDetailPage({ params }: PageProps) {
               </div>
 
               <div className="mb-6">
-                <p className="text-sm text-gray-500">Time Left</p>
+                <p className="text-sm text-black">Time Left</p>
                 <div className="text-xl">
                   <CountdownTimer endTime={car.auction_end_time} />
                 </div>
@@ -128,9 +128,9 @@ export default async function CarDetailPage({ params }: PageProps) {
 
               {auctionEnded ? (
                 <div className="text-center py-4 bg-gray-100 rounded-md">
-                  <p className="font-medium text-gray-600">Auction has ended</p>
+                  <p className="font-medium text-black">Auction has ended</p>
                   {highestBid && bids && (
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-black mt-1">
                       Won by {bids[0].bidder_name} for ${highestBid.toLocaleString()}
                     </p>
                   )}

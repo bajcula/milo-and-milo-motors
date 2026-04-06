@@ -120,7 +120,7 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
       {/* Step 1: Enter email */}
       {step === 'email' && (
         <form onSubmit={handleSendCode} className="space-y-3">
-          <p className="text-sm text-gray-600 mb-3">
+          <p className="text-sm text-black mb-3">
             Enter your email to verify and place a bid.
           </p>
           <div>
@@ -157,7 +157,7 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
       {/* Step 2: Enter verification code */}
       {step === 'code' && (
         <form onSubmit={handleVerifyCode} className="space-y-3">
-          <p className="text-sm text-gray-600 mb-3">
+          <p className="text-sm text-black mb-3">
             We sent a 6-digit code to <strong>{email}</strong>
           </p>
           <div>
@@ -182,7 +182,7 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
           <button
             type="button"
             onClick={() => { setStep('email'); setCode(''); setError('') }}
-            className="w-full text-sm text-gray-500 hover:text-gray-700"
+            className="w-full text-sm text-black hover:text-black"
           >
             Use a different email
           </button>
@@ -196,11 +196,11 @@ export default function BidForm({ carId, minimumBid }: BidFormProps) {
             Verified as <strong>{email}</strong>
           </p>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
               Your Bid (minimum ${minimumBid.toLocaleString()})
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2 text-gray-400">$</span>
+              <span className="absolute left-3 top-2 text-black">$</span>
               <input
                 type="number"
                 step="1"
