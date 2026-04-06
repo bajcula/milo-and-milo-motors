@@ -34,7 +34,7 @@ export default async function CarDetailPage({ params }: PageProps) {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
         <div className="max-w-6xl mx-auto px-4 py-4">
-          <a href="/" className="text-xl font-bold hover:text-blue-600">
+          <a href="/" className="text-xl font-bold text-black hover:text-blue-600">
             Milo & Milo Motors
           </a>
         </div>
@@ -64,7 +64,7 @@ export default async function CarDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            <h1 className="text-3xl font-bold mt-6">{car.title}</h1>
+            <h1 className="text-3xl font-bold mt-6 text-black">{car.title}</h1>
             <p className="text-black mt-1">
               {car.year ?? ''} {car.mileage ? `· ${car.mileage.toLocaleString()} miles` : ''}
             </p>
@@ -74,7 +74,7 @@ export default async function CarDetailPage({ params }: PageProps) {
             )}
 
             <div className="mt-8">
-              <h2 className="text-xl font-bold mb-4">Bid History ({bids?.length || 0})</h2>
+              <h2 className="text-xl font-bold mb-4 text-black">Bid History ({bids?.length || 0})</h2>
               {(!bids || bids.length === 0) ? (
                 <p className="text-black">No bids yet. Be the first!</p>
               ) : (
