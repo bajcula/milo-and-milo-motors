@@ -78,7 +78,7 @@ export default function NewCarForm() {
           className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="starting_price" className="block text-sm font-medium text-black mb-1">Starting Price ($) *</label>
           <input id="starting_price" name="starting_price" type="number" step="0.01" min="0" required placeholder="e.g. 5000"
