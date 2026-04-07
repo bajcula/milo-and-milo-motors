@@ -98,12 +98,12 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
 
   if (success) {
     return (
-      <div className="text-center py-4 bg-green-50 rounded-md">
-        <p className="font-medium text-green-700">Bid placed successfully!</p>
+      <div className="text-center py-4 bg-green-50 rounded-md border border-green-200">
+        <p className="font-bold text-green-700">Bid placed!</p>
         <p className="text-sm text-green-600 mt-1">${parseFloat(amount).toLocaleString()}</p>
         <button
           onClick={() => { setSuccess(false); setAmount('') }}
-          className="mt-3 text-sm text-blue-600 hover:text-blue-800"
+          className="mt-3 text-sm text-navy font-medium hover:underline"
         >
           Place another bid
         </button>
@@ -116,8 +116,8 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
       {/* Step 1: Enter email */}
       {step === 'email' && (
         <form onSubmit={handleSendCode} className="space-y-3">
-          <p className="text-sm text-black mb-3">
-            Enter your email to verify and place a bid.
+          <p className="text-sm text-gray-500 mb-3">
+            Verify your email to place a bid.
           </p>
           <div>
             <input
@@ -126,7 +126,7 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy"
             />
           </div>
           <div>
@@ -136,16 +136,16 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy"
             />
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={loading || !name || !email}
-            className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            className="w-full py-2.5 bg-red-accent text-white rounded-md hover:bg-red-700 disabled:opacity-50 font-bold uppercase tracking-wide text-sm"
           >
-            {loading ? 'Sending code...' : 'Send Verification Code'}
+            {loading ? 'Sending code...' : 'Verify Email'}
           </button>
         </form>
       )}
@@ -153,8 +153,8 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
       {/* Step 2: Enter verification code */}
       {step === 'code' && (
         <form onSubmit={handleVerifyCode} className="space-y-3">
-          <p className="text-sm text-black mb-3">
-            We sent a 8-digit code to <strong>{email}</strong>
+          <p className="text-sm text-gray-500 mb-3">
+            We sent an 8-digit code to <strong className="text-black">{email}</strong>
           </p>
           <div>
             <input
@@ -164,21 +164,21 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
               onChange={(e) => setCode(e.target.value)}
               maxLength={8}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-center text-2xl tracking-widest text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-md text-center text-2xl tracking-widest text-black focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy"
             />
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={loading || code.length !== 8}
-            className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            className="w-full py-2.5 bg-navy text-white rounded-md hover:bg-navy/90 disabled:opacity-50 font-bold uppercase tracking-wide text-sm"
           >
             {loading ? 'Verifying...' : 'Verify Code'}
           </button>
           <button
             type="button"
             onClick={() => { setStep('email'); setCode(''); setError('') }}
-            className="w-full text-sm text-black hover:text-black"
+            className="w-full text-sm text-gray-500 hover:text-black"
           >
             Use a different email
           </button>
@@ -188,9 +188,12 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
       {/* Step 3: Place bid */}
       {step === 'bid' && (
         <form onSubmit={handlePlaceBid} className="space-y-3">
-          <p className="text-sm text-green-600 mb-3">
-            Verified as <strong>{email}</strong>
-          </p>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <p className="text-sm text-green-700 font-medium">
+              Verified as <strong>{email}</strong>
+            </p>
+          </div>
           {!name && (
             <div>
               <input
@@ -199,16 +202,16 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy"
               />
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-black mb-1">
-              Your Bid (minimum ${minimumBid.toLocaleString()})
+              Your Bid (min ${minimumBid.toLocaleString()})
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2 text-black">$</span>
+              <span className="absolute left-3 top-2.5 text-black font-bold">$</span>
               <input
                 type="number"
                 step="1"
@@ -217,7 +220,7 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
                 onChange={(e) => setAmount(e.target.value)}
                 required
                 placeholder={minimumBid.toString()}
-                className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-7 pr-3 py-2 border border-gray-200 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy/30 focus:border-navy text-lg font-bold"
               />
             </div>
           </div>
@@ -225,7 +228,7 @@ export default function BidForm({ carId, minimumBid, verifiedEmail }: BidFormPro
           <button
             type="submit"
             disabled={loading || !amount || !name}
-            className="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 font-medium"
+            className="w-full py-2.5 bg-red-accent text-white rounded-md hover:bg-red-700 disabled:opacity-50 font-bold uppercase tracking-wide text-sm"
           >
             {loading ? 'Placing bid...' : 'Place Bid'}
           </button>

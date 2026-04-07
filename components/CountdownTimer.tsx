@@ -9,6 +9,7 @@ interface CountdownTimerProps {
 export default function CountdownTimer({ endTime }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState('')
   const [ended, setEnded] = useState(false)
+  const [urgent, setUrgent] = useState(false)
 
   useEffect(() => {
     function update() {
@@ -17,7 +18,7 @@ export default function CountdownTimer({ endTime }: CountdownTimerProps) {
       const diff = end - now
 
       if (diff <= 0) {
-        setTimeLeft('Auction Ended')
+        setTimeLeft('Ended')
         setEnded(true)
         return
       }
@@ -26,6 +27,8 @@ export default function CountdownTimer({ endTime }: CountdownTimerProps) {
       const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
       const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+      setUrgent(days === 0 && hours < 6)
 
       if (days > 0) {
         setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`)
@@ -41,8 +44,12 @@ export default function CountdownTimer({ endTime }: CountdownTimerProps) {
     return () => clearInterval(interval)
   }, [endTime])
 
+  if (ended) {
+    return <span className="text-gray-500 font-medium">Ended</span>
+  }
+
   return (
-    <span className={ended ? 'text-red-600 font-medium' : 'text-orange-600 font-mono font-medium'}>
+    <span className={`font-mono font-bold ${urgent ? 'text-red-accent' : 'text-navy'}`}>
       {timeLeft}
     </span>
   )

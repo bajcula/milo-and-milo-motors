@@ -39,53 +39,65 @@ export default async function CarDetailPage({ params }: PageProps) {
     : null
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <a href="/" className="text-xl font-bold text-black hover:text-blue-600">
-            Milo & Milo Motors
+    <div className="min-h-screen bg-cream">
+      {/* Header */}
+      <header className="bg-navy text-white">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-3">
+          <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="w-8 h-8 bg-red-accent rounded-full flex items-center justify-center text-white font-bold text-sm">
+              M
+            </div>
+            <span className="text-lg font-bold">Milo & Milo Motors</span>
           </a>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Photos & Description */}
           <div className="lg:col-span-2">
             <ImageGallery imageUrls={car.image_urls} title={car.title} />
 
-            <h1 className="text-3xl font-bold mt-6 text-black">{car.title}</h1>
-            <p className="text-black mt-1">
-              {car.year ?? ''} {car.mileage ? `· ${car.mileage.toLocaleString()} miles` : ''}
-            </p>
+            <h1 className="text-2xl sm:text-3xl font-bold mt-6 text-black">{car.title}</h1>
+            <div className="flex items-center gap-2 mt-2">
+              {car.year && (
+                <span className="text-sm bg-navy/10 text-navy px-2 py-0.5 rounded font-medium">{car.year}</span>
+              )}
+              {car.mileage && (
+                <span className="text-sm bg-navy/10 text-navy px-2 py-0.5 rounded font-medium">{car.mileage.toLocaleString()} miles</span>
+              )}
+            </div>
 
             {car.description && (
-              <div className="mt-4 text-black whitespace-pre-wrap">{car.description}</div>
+              <div className="mt-4 text-black whitespace-pre-wrap leading-relaxed">{car.description}</div>
             )}
 
             <div className="mt-8">
-              <h2 className="text-xl font-bold mb-4 text-black">Bid History ({bids?.length || 0})</h2>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-2 h-5 bg-red-accent rounded-full"></div>
+                <h2 className="text-lg font-bold text-black uppercase tracking-wide">Bid History ({bids?.length || 0})</h2>
+              </div>
               {(!bids || bids.length === 0) ? (
-                <p className="text-black">No bids yet. Be the first!</p>
+                <p className="text-gray-500">No bids yet. Be the first!</p>
               ) : (
-                <div className="bg-white rounded-lg shadow overflow-hidden">
+                <div className="bg-white rounded-lg shadow-md overflow-x-auto border border-gray-100">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-navy text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-black">Bidder</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-black">Amount</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-black">Time</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">Bidder</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">Amount</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium">Time</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-100">
                       {bids.map((bid, i) => (
                         <tr key={bid.id} className={i === 0 ? 'bg-green-50' : ''}>
                           <td className="px-4 py-3 text-black">{bid.bidder_name}</td>
-                          <td className="px-4 py-3 font-medium text-black">
+                          <td className="px-4 py-3 font-bold text-black">
                             ${bid.amount.toLocaleString()}
-                            {i === 0 && <span className="ml-2 text-xs text-green-600 font-medium">HIGHEST</span>}
+                            {i === 0 && <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-medium">HIGHEST</span>}
                           </td>
-                          <td className="px-4 py-3 text-sm text-black">
+                          <td className="px-4 py-3 text-sm text-gray-500">
                             {new Date(bid.created_at).toLocaleString()}
                           </td>
                         </tr>
@@ -99,29 +111,29 @@ export default async function CarDetailPage({ params }: PageProps) {
 
           {/* Right: Bid Panel */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow p-6 sticky top-8">
+            <div className="bg-white rounded-lg shadow-md p-6 sticky top-8 border border-gray-100">
               <div className="mb-4">
-                <p className="text-sm text-black">
+                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">
                   {highestBid ? 'Current High Bid' : 'Starting Price'}
                 </p>
-                <p className="text-3xl font-bold text-green-700">
+                <p className="text-3xl font-bold text-navy">
                   ${(highestBid ?? car.starting_price).toLocaleString()}
                 </p>
               </div>
 
-              <div className="mb-6">
-                <p className="text-sm text-black">Time Left</p>
-                <div className="text-xl">
+              <div className="mb-6 bg-cream rounded-lg px-4 py-3">
+                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Time Left</p>
+                <div className="text-xl mt-0.5">
                   <CountdownTimer endTime={car.auction_end_time} />
                 </div>
               </div>
 
               {auctionEnded ? (
                 <div className="text-center py-4 bg-gray-100 rounded-md">
-                  <p className="font-medium text-black">Auction has ended</p>
+                  <p className="font-bold text-black">Auction has ended</p>
                   {highestBid && bids && (
-                    <p className="text-sm text-black mt-1">
-                      Won by {bids[0].bidder_name} for ${highestBid.toLocaleString()}
+                    <p className="text-sm text-gray-500 mt-1">
+                      Won by <strong className="text-black">{bids[0].bidder_name}</strong> for ${highestBid.toLocaleString()}
                     </p>
                   )}
                 </div>
@@ -136,6 +148,18 @@ export default async function CarDetailPage({ params }: PageProps) {
           </div>
         </div>
       </main>
+
+      <footer className="bg-navy text-white mt-12">
+        <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-red-accent rounded-full flex items-center justify-center text-white font-bold text-xs">
+              M
+            </div>
+            <span className="text-sm font-bold">Milo & Milo Motors</span>
+          </div>
+          <p className="text-white/50 text-sm">Trusted used car auctions</p>
+        </div>
+      </footer>
     </div>
   )
 }
